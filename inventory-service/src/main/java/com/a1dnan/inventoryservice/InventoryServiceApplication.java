@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class InventoryServiceApplication {
@@ -21,24 +22,16 @@ public class InventoryServiceApplication {
     CommandLineRunner start(ProductRepository productRepository, RepositoryRestConfiguration restConfiguration){
         return args -> {
             restConfiguration.exposeIdsFor(Product.class);
-            productRepository.saveAll(List.of(
-                    Product.builder()
-                            .name("Lenovo")
-                            .price(8000)
-                            .quantity(2)
-                            .build(),
-                    Product.builder()
-                            .name("Samsung")
-                            .price(9000)
-                            .quantity(4)
-                            .build(),
-                    Product.builder()
-                            .name("PS5")
-                            .price(7000)
-                            .quantity(6)
-                            .build()
-            ));
-            productRepository.findAll().forEach(System.out::println);
+            Random random=new Random();
+            for (int i = 1; i <10 ; i++) {
+                productRepository.saveAll(List.of(
+                        Product.builder()
+                                .name("Compuer "+i)
+                                .price(1200+Math.random()*10000)
+                                .quantity(1+random.nextInt(200)).build()
+                ));
+            }
+
         };
     }
 }
