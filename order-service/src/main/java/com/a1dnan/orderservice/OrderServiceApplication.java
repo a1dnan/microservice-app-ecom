@@ -14,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 import java.util.Collection;
 import java.util.Date;
@@ -31,8 +32,10 @@ public class OrderServiceApplication {
     CommandLineRunner start(OrderRepository orderRepository,
                             ProductItemRepository productItemRepository,
                             CustomerRestClientService customerRestClientService,
-                            ProductRestClientService productRestClientService){
+                            ProductRestClientService productRestClientService,
+                            RepositoryRestConfiguration restConfiguration){
         return args -> {
+            restConfiguration.exposeIdsFor(Order.class);
             List<Customer> customers = customerRestClientService.allCustomers().getContent().stream().toList();
             List<Product> products = productRestClientService.allProducts().getContent().stream().toList();
 
